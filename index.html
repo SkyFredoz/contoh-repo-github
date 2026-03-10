@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Nastja | Ethereal Birthday 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Playfair+Display:ital,wght@0,700;1,400&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.05);
+            --accent: #cbd5e1;
+            --rose: #e5989b;
+            --bg: #05050a;
+            --card-bg: rgba(15, 15, 25, 0.85);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0; padding: 0;
+            background: var(--bg);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            transition: background 1.5s ease;
+        }
+
+        /* --- BACKGROUND PARTICLES --- */
+        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.3; transition: 1s; }
+
+        section { padding: 60px 20px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 35px;
+            padding: 40px 25px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 1s ease;
+        }
+
+        /* Night Sky Mode Effect */
+        .sky-active { background: #000; }
+        .sky-active .glass-card { background: rgba(0,0,0,0.2); border-color: transparent; box-shadow: none; }
+        .sky-active .star { opacity: 1 !important; transform: scale(1.5); }
+
+        h1 { font-family: 'Sacramento', cursive; font-size: clamp(3.5rem, 12vw, 5rem); color: var(--accent); margin: 0; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 25px; }
+
+        /* --- 1. LUXURY COMPASS --- */
+        .compass-wrap {
+            width: 170px; height: 170px;
+            border: 2px solid rgba(203, 213, 225, 0.2);
+            border-radius: 50%;
+            margin: 30px auto;
+            position: relative;
+            background: radial-gradient(circle, rgba(203, 213, 225, 0.05) 0%, transparent 70%);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .needle {
+            width: 4px; height: 80px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            position: absolute; bottom: 50%;
+            transform-origin: bottom center;
+            border-radius: 4px;
+            box-shadow: 0 0 20px var(--accent);
+            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- 2. INFINITE POLAROID GALLERY --- */
+        .gallery-wrap { height: 380px; width: 100%; position: relative; display: flex; justify-content: center; align-items: center; margin-top: 20px; }
+        .polaroid {
+            position: absolute; width: 220px; background: white; padding: 12px 12px 35px 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); border-radius: 2px;
+            cursor: grab; user-select: none; touch-action: none;
+            transition: transform 0.4s ease, opacity 0.3s;
+        }
+        .polaroid img { width: 100%; height: 200px; object-fit: cover; pointer-events: none; }
+        .polaroid p { font-family: 'Sacramento', cursive; color: #222; margin: 12px 0 0; font-size: 1.6rem; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            background: transparent; border: 1px solid var(--accent); color: var(--accent);
+            padding: 12px 30px; border-radius: 50px; cursor: pointer; font-size: 0.75rem;
+            letter-spacing: 3px; text-transform: uppercase; margin: 10px 0; transition: 0.3s;
+        }
+        .btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
+
+        /* --- SCRATCH CARD --- */
+        #scratch-wrap { position: relative; width: 280px; height: 160px; margin: 0 auto; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); }
+        #scratch-canvas { position: absolute; top:0; left:0; z-index: 2; touch-action: none; cursor: crosshair; }
+        .scratch-content { background: #111; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; font-size: 0.9rem; }
+
+        /* --- TIMELINE --- */
+        .timeline { border-left: 1px solid var(--accent); padding: 0 25px; text-align: left; max-width: 350px; margin: 0 auto; }
+        .timeline-item { position: relative; margin-bottom: 40px; }
+        .timeline-item::before { content: '✨'; position: absolute; left: -36px; top: 0; font-size: 14px; }
+
+        /* --- LOCK SCREEN --- */
+        #lock-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #05050a; z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; transition: opacity 1.5s ease-in-out;
+        }
+        #lock-screen.hide { opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <!-- LOCK SCREEN OVERLAY -->
+    <div id="lock-screen">
+        <h1 style="font-size: 4rem; margin: 0;">🔒</h1>
+        <h2 style="font-family: 'Playfair Display'; margin: 20px 0; color: var(--accent);">Not Yet Time</h2>
+        <p id="timer" style="font-family: 'Montserrat'; font-size: 1.5rem; color: var(--rose); font-weight: bold;"></p>
+        <p style="opacity: 0.5; font-size: 0.8rem; margin-top: 20px;">Waiting for midnight in Germany</p>
+    </div>
+
+    <div id="star-container"></div>
+
+    <section>
+        <div class="glass-card">
+            <p style="letter-spacing: 5px; font-size: 0.6rem; opacity: 0.6; margin-bottom: 20px;">MOONSTRUCK EXPERIENCE</p>
+            <h1>Nastja</h1>
+            <p>Happy Birthday to a wonderful soul.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+                <button class="btn" onclick="toggleSky()" id="skyBtn">Turn Off Lights 🌙</button>
+                <button class="btn" onclick="rainCompliments()">Rain of Love 💖</button>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card">
+            <h2>Fortune Cookie</h2>
+            <div onclick="breakCookie()" style="font-size: 5rem; cursor: pointer; transition: 0.3s;" id="cookie">🥠</div>
+            <p id="fortune-text" style="min-height: 40px; margin-top: 20px; font-style: italic; color: var(--accent);"></p>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card">
+            <h2>Friendship Compass</h2>
+            <div class="compass-wrap">
+                <div class="needle" id="needle"></div>
+                <div style="position: absolute; top: -30px; font-size: 0.7rem; letter-spacing: 3px; color: var(--accent);">LUTFI</div>
+                <div style="position: absolute; bottom: -30px; font-size: 0.7rem; letter-spacing: 3px; opacity: 0.5;">GERMANY</div>
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 45px; line-height: 1.7; font-weight: 300;">
+                No matter where you are in Germany, this needle always points to where I am. <br><b>You're never alone.</b>
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card">
+            <h2>Memory Stack</h2>
+            <p style="font-size: 0.7rem; opacity: 0.5; margin-bottom: 15px;">(Swipe cards to see them all)</p>
+            <div class="gallery-wrap" id="gallery">
+                <div class="polaroid" style="transform: rotate(-3deg);">
+                    <img src="Component/Bread.jpeg?w=400">
+                    <p>Guessing Games about price</p>
+                </div>
+                <div class="polaroid" style="transform: rotate(5deg);">
+                    <img src="Component/Guess.jpeg?w=400">
+                    <p>Guessing Games about song</p>
+                </div>
+                <div class="polaroid" style="transform: rotate(-5deg);">
+                    <img src="Component/first.jpeg?w=400">
+                    <p>Dec 26, 18:40</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card">
+            <h2>Our Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <b style="color: var(--accent)">Dec 26, 2025 • 18:40</b>
+                    <p style="font-size: 0.85rem; opacity: 0.8;">The moment we connected on Yeetalk. A random hello that started it all.</p>
+                </div>
+                <div class="timeline-item">
+                    <b style="color: var(--accent)">Yeetalk Games</b>
+                    <p style="font-size: 0.85rem; opacity: 0.8;">"Guess the Song" and "Guess the Word". I still remember every laugh we shared.</p>
+                </div>
+                <div class="timeline-item">
+                    <b style="color: var(--accent)">Distance Beyond</b>
+                    <p style="font-size: 0.85rem; opacity: 0.8;">Miles away in Germany, but closer than ever in heart.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card">
+            <h2>Procedural Bloom</h2>
+            <canvas id="flowerCanvas" width="300" height="300"></canvas><br>
+            <button class="btn" onclick="drawFlower()">Grow Flower 🌸</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card">
+            <h2>Hidden Wish</h2>
+            <div id="scratch-wrap">
+                <div class="scratch-content">
+                    <b>"You are the brightest soul I've ever met. Happy Birthday, Nastja!"</b>
+                </div>
+                <canvas id="scratch-canvas" width="280" height="160"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card" style="text-align: left; line-height: 1.8;">
+            <h2 style="text-align: center;">Dear Nastja,</h2>
+            <p style="font-size: 0.95rem; font-weight: 300;">
+                I wanted to build this digital world for you. Since we met on Yeetalk that evening at 18:40, my world has felt a lot more fun. 
+                I still smile thinking about us playing those guessing games—guessing songs and words until the hours flew by. <br><br>
+                Even though you are in Germany and I am far away, I want you to know that distance means nothing. 
+                You are an amazing friend, and I'm so glad we met. May your day be as magical as the night sky.
+            </p>
+            <p style="font-family: 'Sacramento'; font-size: 2.5rem; color: var(--accent); text-align: right; margin-top: 30px;">Lutfi</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="glass-card">
+            <div style="border: 1px solid var(--accent); padding: 35px; background: rgba(255,255,255,0.02);">
+                <p style="font-size: 0.6rem; letter-spacing: 3px;">OFFICIAL AWARD 2026</p>
+                <h2 style="font-family: 'Sacramento'; font-size: 3rem; margin: 15px 0;">Best Friend</h2>
+                <p>Awarded to</p>
+                <h3 style="letter-spacing: 5px; border-bottom: 1px solid var(--accent); display: inline-block; padding: 5px 20px;">NASTJA</h3>
+                <p style="font-size: 0.8rem; margin-top: 30px; opacity: 0.7;">For being an irreplaceable person <br> across the ocean.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- STAR SYSTEM ---
+        const starContainer = document.getElementById('star-container');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            star.style.width = size; star.style.height = size;
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            starContainer.appendChild(star);
+        }
+
+        function toggleSky() {
+            document.body.classList.toggle('sky-active');
+            document.getElementById('skyBtn').innerText = document.body.classList.contains('sky-active') ? "Lights On 💡" : "Turn Off Lights 🌙";
+        }
+
+        // --- COMPASS LOGIC ---
+        setInterval(() => {
+            const jitter = Math.random() * 6 - 3;
+            document.getElementById('needle').style.transform = `rotate(${145 + jitter}deg)`;
+        }, 1000);
+
+        // --- INFINITE POLAROID LOGIC ---
+        const gallery = document.getElementById('gallery');
+        let isDragging = false;
+        let startX, startY, card;
+
+        function initCard(el) {
+            el.addEventListener('mousedown', startDrag);
+            el.addEventListener('touchstart', startDrag);
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            card = e.currentTarget;
+            startX = (e.pageX || e.touches[0].pageX);
+            startY = (e.pageY || e.touches[0].pageY);
+            card.style.transition = "none";
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging || !card) return;
+            let x = (e.pageX || e.touches[0].pageX) - startX;
+            let y = (e.pageY || e.touches[0].pageY) - startY;
+            card.style.transform = `translate(${x}px, ${y}px) rotate(${x/10}deg)`;
+        });
+
+        window.addEventListener('mouseup', endDrag);
+        window.addEventListener('touchend', endDrag);
+
+        function endDrag(e) {
+            if (!isDragging || !card) return;
+            isDragging = false;
+            let xDiff = (e.pageX || (e.changedTouches ? e.changedTouches[0].pageX : 0)) - startX;
+            if (Math.abs(xDiff) > 120) {
+                card.style.transition = "0.6s cubic-bezier(0.2, 0.8, 0.2, 1)";
+                card.style.transform = `translate(${xDiff * 5}px, 0) rotate(${xDiff / 5}deg)`;
+                card.style.opacity = "0";
+                const current = card;
+                setTimeout(() => {
+                    gallery.removeChild(current);
+                    current.style.opacity = "1";
+                    current.style.transform = `rotate(${Math.random()*10 - 5}deg)`;
+                    gallery.prepend(current);
+                    initCard(current);
+                }, 600);
+            } else {
+                card.style.transition = "0.3s ease";
+                card.style.transform = `rotate(${Math.random()*10 - 5}deg)`;
+            }
+            card = null;
+        }
+        document.querySelectorAll('.polaroid').forEach(initCard);
+
+        // --- FORTUNE COOKIE ---
+        function breakCookie() {
+            const fortunes = ["You will find something magical today! ✨", "A big smile is coming your way! 😊", "The stars are aligned for your success! 🌟"];
+            document.getElementById('cookie').innerText = '🥧';
+            document.getElementById('fortune-text').innerText = fortunes[Math.floor(Math.random()*fortunes.length)];
+        }
+
+        // --- GENERATIVE FLOWER ---
+        const fCanvas = document.getElementById('flowerCanvas');
+        const fCtx = fCanvas.getContext('2d');
+        function drawFlower() {
+            fCtx.clearRect(0,0,300,300);
+            let angle = 0;
+            const draw = () => {
+                if(angle > Math.PI * 10) return;
+                fCtx.save(); fCtx.translate(150, 140);
+                let r = 100 * Math.sin(5/2 * angle);
+                let x = r * Math.cos(angle); let y = r * Math.sin(angle);
+                fCtx.beginPath(); fCtx.fillStyle = '#e5989b'; fCtx.globalAlpha = 0.4;
+                fCtx.arc(x, y, 4, 0, Math.PI * 2); fCtx.fill(); fCtx.restore();
+                angle += 0.05; requestAnimationFrame(draw);
+            }
+            fCtx.beginPath(); fCtx.strokeStyle = '#8a9a5b'; fCtx.lineWidth = 4;
+            fCtx.moveTo(150, 150); fCtx.lineTo(150, 300); fCtx.stroke();
+            draw();
+        }
+
+        // --- SCRATCH CARD ---
+        const sCanvas = document.getElementById('scratch-canvas');
+        const sCtx = sCanvas.getContext('2d');
+        sCtx.fillStyle = '#333'; sCtx.fillRect(0,0,280,160);
+        sCtx.fillStyle = '#777'; sCtx.font = 'bold 12px Montserrat'; sCtx.textAlign='center'; sCtx.fillText('SCRATCH TO REVEAL', 140, 85);
+
+        const scratch = (e) => {
+            const rect = sCanvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            sCtx.globalCompositeOperation = 'destination-out';
+            sCtx.beginPath(); sCtx.arc(x, y, 25, 0, Math.PI*2); sCtx.fill();
+        };
+        sCanvas.addEventListener('mousemove', (e) => e.buttons === 1 && scratch(e));
+        sCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); });
+
+        // --- COMPLIMENTS ---
+        function rainCompliments() {
+            const words = ['KIND', 'SMART', 'NASTJA', 'BEAUTIFUL', 'WUNDERBAR', 'BESTIE'];
+            for(let i=0; i<30; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.style.position = 'fixed'; el.style.top = '-50px';
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.color = 'white'; el.innerText = words[i%6];
+                    el.style.fontSize = '0.7rem'; el.style.zIndex = '9999';
+                    el.animate([{transform: 'translateY(0)'}, {transform: 'translateY(110vh) rotate(360deg)'}], {duration: 3500, fill: 'forwards'});
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 3500);
+                }, i * 200);
+            }
+        }
+
+        // --- COUNTDOWN LOCK SYSTEM ---
+        // Set tanggal target di sini (Format: YYYY-MM-DDTHH:mm:ss+Offset)
+        // +01:00 adalah timezone Jerman (CET) saat musim dingin (Desember).
+        // Saya set ke 11 Maret 2026 jam 00:00 Jerman.
+        const targetDate = new Date('2026-03-11T00:00:00+01:00'); 
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+            const lockScreen = document.getElementById('lock-screen');
+
+            if (diff <= 0) {
+                lockScreen.classList.add('hide');
+            } else {
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Run immediately
+    </script>
+</body>
+</html>
